@@ -211,6 +211,7 @@ class ExportForm(forms.Form):
                   if self.cleaned_data["field_%s_export" % f.id]]
         if self.cleaned_data["field_0_export"]:
             fields.append(self.entry_time_name)
+        fields.append("Entry ID")
         return fields
 
     def rows(self, csv=False):
