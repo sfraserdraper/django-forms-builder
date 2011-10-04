@@ -14,6 +14,8 @@ from forms_builder.forms import fields
 from forms_builder.forms.models import FormEntry, FieldEntry
 from forms_builder.forms import settings
 
+from forms.views import format_entry
+
 
 fs = FileSystemStorage(location=settings.UPLOAD_ROOT)
 
@@ -61,7 +63,6 @@ choice_filter_field = forms.ChoiceField(label=" ", required=False,
                                         choices=CHOICE_FILTER_CHOICES)
 date_filter_field = forms.ChoiceField(label=" ", required=False,
                                       choices=DATE_FILTER_CHOICES)
-
 
 class FormForForm(forms.ModelForm):
 
@@ -259,7 +260,7 @@ class ExportForm(forms.Form):
             if field_entry.entry_id != current_entry:
                 # New entry, write out the current row and start a new one.
                 if valid_row and current_row is not None:
-                    current_row.append("%d" % current_entry)
+                    current_row.append(format_entry(current_entry))
                     yield current_row
                 current_entry = field_entry.entry_id
                 current_row = [""] * num_columns
@@ -315,5 +316,5 @@ class ExportForm(forms.Form):
                 pass
         # Output the final row.
         if valid_row and current_row is not None:
-            current_row.append("%d" % current_entry)
+            current_row.append(format_entry(current_entry))
             yield current_row
