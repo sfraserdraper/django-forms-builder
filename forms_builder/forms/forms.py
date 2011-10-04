@@ -258,6 +258,7 @@ class ExportForm(forms.Form):
             if field_entry.entry_id != current_entry:
                 # New entry, write out the current row and start a new one.
                 if valid_row and current_row is not None:
+                    current_row.append("%d" % current_entry)
                     yield current_row
                 current_entry = field_entry.entry_id
                 current_row = [""] * num_columns
@@ -313,4 +314,5 @@ class ExportForm(forms.Form):
                 pass
         # Output the final row.
         if valid_row and current_row is not None:
+            current_row.append("%d" % current_entry)
             yield current_row
