@@ -14,7 +14,7 @@ from forms_builder.forms import fields
 from forms_builder.forms.models import FormEntry, FieldEntry
 from forms_builder.forms import settings
 
-from dynforms.views import format_entry
+from dynforms.utils import format_entry
 
 
 fs = FileSystemStorage(location=settings.UPLOAD_ROOT)
