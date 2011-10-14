@@ -15,8 +15,8 @@ UPLOAD_ROOT = getattr(settings, "FORMS_BUILDER_UPLOAD_ROOT", None)
 USE_HTML5 = getattr(settings, "FORMS_BUILDER_USE_HTML5", True)
 
 # Boolean controlling whether forms are associated to Django's Sites framework.
-USE_SITES = getattr(settings, "FORMS_BUILDER_USE_SITES",
-                    "django.contrib.sites" in settings.INSTALLED_APPS)
+USE_SITES = getattr(settings, "FORMS_BUILDER_USE_SITES", False)
+#                    "django.contrib.sites" in settings.INSTALLED_APPS)
 
 # Char to start a quoted choice with.
 CHOICES_QUOTE = getattr(settings, "FORMS_BUILDER_CHOICES_QUOTE", "`")
