@@ -87,23 +87,12 @@ class AbstractForm(models.Model):
     def __unicode__(self):
         return self.title
 
-    def save(self, *args, **kwargs):
-        """
-        Create a unique slug from title - append an index and increment if it
-        already exists.
-        """
-        if not self.slug:
-            self.slug = slugify(self.title)
-            i = 0
-            while True:
-                if i > 0:
-                    if i > 1:
-                        self.slug = self.slug.rsplit("-", 1)[0]
-                    self.slug = "%s-%s" % (self.slug, i)
-                if not self.__class__.objects.filter(slug=self.slug):
-                    break
-                i += 1
-        super(AbstractForm, self).save(*args, **kwargs)
+    def clean(self):
+        new_slug = slugify(self.title)
+        if self.slug != new_slug:
+            if self.__class__.objects.filter(slug=new_slug):
+                raise ValidationError("Title already exists")
+            self.slug = new_slug
 
     def total_entries(self):
         """
