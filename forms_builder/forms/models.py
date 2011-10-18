@@ -9,6 +9,7 @@ from django.utils.translation import ugettext, ugettext_lazy as _
 
 from forms_builder.forms import fields
 from forms_builder.forms import settings
+from django.core.exceptions import ValidationError
 
 
 STATUS_DRAFT = 1
