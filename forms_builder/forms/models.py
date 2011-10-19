@@ -139,7 +139,9 @@ class AbstractField(models.Model):
     """
 
     label = models.CharField(_("Label"), max_length=settings.LABEL_MAX_LENGTH)
-    field_type = models.IntegerField(_("Type"), choices=fields.NAMES)
+    field_type = models.IntegerField(_("Type"), choices=
+        # exclude the file control for the moment
+        fields.NAMES[:fields.FILE - 1] + fields.NAMES[fields.FILE:])
     required = models.BooleanField(_("Required"), default=True)
     visible = models.BooleanField(_("Visible"), default=True)
     choices = models.CharField(_("Choices"), max_length=1000, blank=True,
