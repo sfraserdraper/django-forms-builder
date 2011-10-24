@@ -14,7 +14,7 @@ from forms_builder.forms.settings import USE_SITES
 from forms_builder.forms.signals import form_invalid, form_valid
 
 
-def form_detail(request, slug, template="forms/form_detail.html"):
+def form_detail(request, slug, template="forms/form_detail.html", **kwargs):
     """
     Display a built form and handle submission.
     """
@@ -37,11 +37,17 @@ def form_detail(request, slug, template="forms/form_detail.html"):
             subject = form.email_subject
             if not subject:
                 subject = "%s - %s" % (form.title, entry.entry_time)
-            body = "\n".join(fields)
+#            body = "\n".join(fields)
             if form.email_message:
-                body = "%s\n\n%s" % (form.email_message, body)
+#                body = "%s\n\n%s" % (form.email_message, body)
+                body = form.email_message
+            else:
+                body = "Thanks!"
             email_from = form.email_from or settings.DEFAULT_FROM_EMAIL
-            email_to = form_for_form.email_to()
+            if 'email_to' in kwargs:
+                email_to = kwargs['email_to']
+            else:
+                email_to = form_for_form.email_to()
             if email_to and form.send_email:
                 msg = EmailMessage(subject, body, email_from, [email_to])
                 msg.send()
