@@ -31,7 +31,10 @@ def form_detail(request, slug, template="forms/form_detail.html", **kwargs):
         if not form_for_form.is_valid():
             form_invalid.send(sender=request, form=form_for_form)
         else:
-            entry = form_for_form.save()
+            if 'saved_entry' in kwargs:
+                entry = kwargs['saved_entry']
+            else:
+                entry = form_for_form.save()
             fields = ["%s: %s" % (v.label, form_for_form.cleaned_data[k])
                 for (k, v) in form_for_form.fields.items()]
             subject = form.email_subject
