@@ -23,8 +23,9 @@ from forms_builder.forms.settings import CSV_DELIMITER, UPLOAD_ROOT, USE_SITES
 fs = FileSystemStorage(location=UPLOAD_ROOT)
 form_admin_filter_horizontal = ()
 form_admin_fieldsets = [
-    (None, {"fields": ("title", ("status", "login_required",),
-        ("publish_date", "expiry_date",), "intro", "button_text", "response")}),
+#    (None, {"fields": ("title", ("status", "login_required",),
+#        ("publish_date", "expiry_date",), "intro", "button_text", "response")}),
+    (None, {"fields": ("title", "intro", "button_text", "response")}),
     (_("Email"), {"fields": ("send_email", "email_from", "email_copies",
         "email_subject", "email_message")}),]
 
@@ -35,19 +36,22 @@ if USE_SITES:
 
 class FieldAdmin(admin.TabularInline):
     model = Field
+    exclude = ("placeholder_text",)
 
 class FormAdmin(admin.ModelAdmin):
 
     inlines = (FieldAdmin,)
-    list_display = ("title", "status", "email_copies", "publish_date",
-                    "expiry_date", "total_entries", "admin_links")
+#    list_display = ("title", "status", "email_copies", "publish_date",
+#                    "expiry_date", "total_entries", "admin_links")
+    list_display = ("title", "email_copies", "total_entries", "admin_links")
     list_display_links = ("title",)
-    list_editable = ("status", "email_copies", "publish_date", "expiry_date")
-    list_filter = ("status",)
+#    list_editable = ("status", "email_copies", "publish_date", "expiry_date")
+    list_editable = ("email_copies",)
+#    list_filter = ("status",)
     filter_horizontal = form_admin_filter_horizontal
     search_fields = ("title", "intro", "response", "email_from",
                      "email_copies")
-    radio_fields = {"status": admin.HORIZONTAL}
+#    radio_fields = {"status": admin.HORIZONTAL}
     fieldsets = form_admin_fieldsets
 
     def queryset(self, request):
